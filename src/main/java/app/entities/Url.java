@@ -4,15 +4,19 @@ import app.dtos.UrlDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.Table;
+import lombok.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "url")
 public class Url {
 
     @Id
@@ -26,5 +30,4 @@ public class Url {
         this.longUrl = urlDTO.getLongUrl();
         this.shortUrl = urlDTO.getShortUrl();
     }
-
 }

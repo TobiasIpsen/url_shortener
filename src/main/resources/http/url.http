@@ -1,0 +1,16 @@
+### Get all urls
+GET {{url}}/url
+Accept: application/json
+
+### Create Url
+POST {{url}}/url
+Accept: application/json
+Content-Type:application/json
+
+{
+  "longUrl": "http://youtube.com/"
+}
+
+
+### Get url
+GET {{url}}/url/6DpKSV

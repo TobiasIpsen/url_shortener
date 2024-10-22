@@ -3,12 +3,12 @@ package app.dtos;
 import app.entities.Url;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UrlDTO {
 
     String longUrl;

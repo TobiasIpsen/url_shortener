@@ -2,11 +2,14 @@ package app.daos;
 
 import app.dtos.UrlDTO;
 import app.entities.Url;
+import app.entities.UrlTracking;
+import app.utils.Conversion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UrlDAO implements IDao {
@@ -23,7 +26,7 @@ public class UrlDAO implements IDao {
     }
 
     @Override
-    public List<UrlDTO> getALl() {
+    public List<UrlDTO> getAll() {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<UrlDTO> query = em.createQuery("SELECT c FROM Url c", UrlDTO.class);
             return query.getResultList();
@@ -34,7 +37,9 @@ public class UrlDAO implements IDao {
     public UrlDTO getLongUrl(String shortUrl) {
         Url url;
         try (EntityManager em = emf.createEntityManager()) {
-            url = em.find(Url.class, shortUrl);
+            TypedQuery<Url> query = em.createQuery("SELECT u FROM Url u WHERE u.shortUrl = :url", Url.class);
+            query.setParameter("url", shortUrl);
+            url = query.getSingleResult();
             if (url == null) {
                 throw new EntityNotFoundException();
             }
@@ -44,14 +49,16 @@ public class UrlDAO implements IDao {
 
     @Override
     public UrlDTO create(UrlDTO urlDTO) {
-        Url url;
         try (EntityManager em = emf.createEntityManager()) {
-            url = new Url(urlDTO);
+            Url url = new Url(urlDTO);
+            url.setShortUrl(Conversion.shortCode());
             em.getTransaction().begin();
             em.persist(url);
             em.getTransaction().commit();
+            return new UrlDTO(url);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return new UrlDTO(url);
     }
 
     @Override
@@ -66,6 +73,6 @@ public class UrlDAO implements IDao {
 
     @Override
     public UrlDTO update() {
-
+        return null;
     }
 }

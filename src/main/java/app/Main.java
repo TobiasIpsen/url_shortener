@@ -1,11 +1,9 @@
 package app;
 
-import app.config.ApplicationConfig;
-import app.config.HibernateConfig;
-import jakarta.persistence.EntityManagerFactory;
+import app.config.ApplicationConfigV2;
 
 public class Main {
     public static void main(String[] args) {
-        ApplicationConfig.startServer(7070);
+        ApplicationConfigV2.startServer(7070);
     }
 }

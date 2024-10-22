@@ -1,26 +1,34 @@
 package app.controllers;
 
-import app.config.HibernateConfig;
+import app.config.HibernateConfigV2;
+import app.daos.TrackingDAO;
 import app.daos.UrlDAO;
+import app.dtos.IpDTO;
 import app.dtos.UrlDTO;
+import app.entities.Url;
+import app.entities.UrlTracking;
+import app.service.IPAPI;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
 public class UrlController implements IController {
 
-    private final UrlDAO dao;
+    UrlDAO urlDAO;
+    TrackingDAO trackingDAO;
 
     public UrlController() {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
-        this.dao = UrlDAO.getInstance(emf);
+        EntityManagerFactory emf = HibernateConfigV2.getEntityManagerFactoryConfig(false);
+        this.urlDAO = UrlDAO.getInstance(emf);
+        this.trackingDAO = TrackingDAO.getInstance(emf);
     }
 
     @Override
     public void getAll(Context ctx) {
         // DTO
-        List<UrlDTO> urlDTO = dao.getAll();
+        List<UrlDTO> urlDTO = urlDAO.getAll();
         // response
         ctx.res().setStatus(200);
         ctx.json(urlDTO, UrlDTO.class);
@@ -28,19 +36,35 @@ public class UrlController implements IController {
 
     @Override
     public void get(Context ctx) {
-        String url = ctx.pathParam("url");
+        String shortUrl = ctx.pathParam("shortUrl");
+        String clientIp = ctx.ip();
+        String clientIp2 = ctx.header("X-Forwarded-For");
+        if (clientIp == null) {
+        }
         // DTO
+        UrlDTO urlDTO = urlDAO.getLongUrl(shortUrl);
+        trackingDAO.count(urlDTO, clientIp);
         // Respoonse/Redirect
+        ctx.redirect(urlDTO.getLongUrl());
     }
 
     @Override
     public void create(Context ctx) {
-
+        if (ctx.body().isEmpty()) {
+            ctx.json("Request is empty");
+        } else {
+            UrlDTO urlDTO = ctx.bodyAsClass(UrlDTO.class);
+            UrlDTO newShortUrl = urlDAO.create(urlDTO);
+            ctx.status(HttpStatus.CREATED);
+            ctx.json(newShortUrl);
+        }
     }
 
     @Override
     public void delete(Context ctx) {
-
+        String shortUrl = ctx.pathParam("url");
+        urlDAO.delete(shortUrl);
+        ctx.status(HttpStatus.OK);
     }
 
     @Override

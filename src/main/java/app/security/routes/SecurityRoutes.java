@@ -6,7 +6,7 @@ import app.security.enums.Role;
 import app.utils.Utils;
 import io.javalin.apibuilder.EndpointGroup;
 
-import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 /**
  * Purpose: To handle security in the API

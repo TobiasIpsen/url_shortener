@@ -3,14 +3,14 @@ package app.security.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nimbusds.jose.JOSEException;
-import dat.config.HibernateConfig;
-import dat.security.daos.ISecurityDAO;
-import dat.security.daos.SecurityDAO;
-import dat.security.entities.User;
-import dat.security.exceptions.ApiException;
-import dat.security.exceptions.NotAuthorizedException;
-import dat.security.exceptions.ValidationException;
-import dat.utils.Utils;
+import app.config.HibernateConfigV2;
+import app.security.daos.ISecurityDAO;
+import app.security.daos.SecurityDAO;
+import app.security.entities.User;
+import app.security.exceptions.ApiException;
+import app.security.exceptions.NotAuthorizedException;
+import app.security.exceptions.ValidationException;
+import app.utils.Utils;
 import dk.bugelhartmann.ITokenSecurity;
 import dk.bugelhartmann.TokenSecurity;
 import dk.bugelhartmann.UserDTO;
@@ -45,7 +45,7 @@ public class SecurityController implements ISecurityController {
         if (instance == null) {
             instance = new SecurityController();
         }
-        securityDAO = new SecurityDAO(HibernateConfig.getEntityManagerFactory());
+        securityDAO = new SecurityDAO(HibernateConfigV2.getEntityManagerFactoryConfig(false));
         return instance;
     }
 
