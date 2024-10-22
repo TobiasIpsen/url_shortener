@@ -7,6 +7,9 @@ import app.entities.UrlTracking;
 import app.service.IPAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class TrackingDAO {
 
@@ -22,15 +25,18 @@ public class TrackingDAO {
     }
 
     public void count(UrlDTO url, String clientIp) {
-        IpDTO region = IPAPI.getIP(clientIp);
+        IpDTO ip = IPAPI.getIP(clientIp);
 
         try (EntityManager em = emf.createEntityManager()) {
             UrlTracking urlTracking;
-            UrlTracking found = em.find(UrlTracking.class,url.getShortUrl());
-            if (found == null) {
-                urlTracking = new UrlTracking(url.getShortUrl(), region.getRegion(), 1);
+//            UrlTracking found = em.find(UrlTracking.class, url.getShortUrl());
+            TypedQuery<UrlTracking> query = em.createQuery("SELECT u FROM UrlTracking u WHERE u.url = :shorturl", UrlTracking.class);
+            query.setParameter("shorturl",url.getShortUrl());
+            List<UrlTracking> found = query.getResultList();
+            if (found.isEmpty()) {
+                urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), 1);
             } else {
-                urlTracking = new UrlTracking(url.getShortUrl(), region.getRegion(), found.getCount()+1);
+                urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), found.get(0).getCount()+1);
             }
             em.getTransaction().begin();
             em.persist(urlTracking);

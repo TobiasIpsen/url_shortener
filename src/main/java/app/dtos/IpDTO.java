@@ -1,5 +1,6 @@
 package app.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 @ToString
@@ -7,11 +8,13 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class IpDTO {
 
 //    private String status;
 //    private String country;
-    private String region;
+//    private String region;
+    private String regionName;
 //    private String city;
 //    private String zip;
 //    private double lat;

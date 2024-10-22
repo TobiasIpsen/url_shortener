@@ -37,13 +37,13 @@ public class UrlController implements IController {
     @Override
     public void get(Context ctx) {
         String shortUrl = ctx.pathParam("shortUrl");
-        String clientIp = ctx.ip();
-        String clientIp2 = ctx.header("X-Forwarded-For");
+        String clientIp = ctx.header("X-Forwarded-For");
         if (clientIp == null) {
+            clientIp = ctx.ip();
         }
         // DTO
         UrlDTO urlDTO = urlDAO.getLongUrl(shortUrl);
-        trackingDAO.count(urlDTO, clientIp);
+        trackingDAO.count(urlDTO, "185.107.176.36");
         // Respoonse/Redirect
         ctx.redirect(urlDTO.getLongUrl());
     }
