@@ -1,5 +1,7 @@
 package app.security.entities;
 
+import app.dtos.UserDTO;
+import app.entities.Url;
 import jakarta.persistence.*;
 import lombok.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -8,6 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Purpose: To handle security in the API
@@ -30,6 +33,7 @@ public class User implements Serializable, ISecurityUser {
     @Basic(optional = false)
     @Column(name = "username", length = 25)
     private String username;
+
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
@@ -37,6 +41,10 @@ public class User implements Serializable, ISecurityUser {
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    Set<Url> urls = new HashSet<>();
+
 
     public Set<String> getRolesAsStrings() {
         if (roles.isEmpty()) {
@@ -51,6 +59,16 @@ public class User implements Serializable, ISecurityUser {
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
+    }
+
+    public User(UserDTO userDTO) {
+        this.username = userDTO.getUsername();
+        this.roles = userDTO.getRoles().stream()
+                .map(Role::new)
+                .collect(Collectors.toSet());
+        this.urls = userDTO.getUrlDTOS().stream()
+                .map(Url::new)
+                .collect(Collectors.toSet());
     }
 
     public User(String userName, String userPass) {

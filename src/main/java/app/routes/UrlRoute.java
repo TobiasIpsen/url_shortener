@@ -12,19 +12,11 @@ public class UrlRoute {
 
     public EndpointGroup getRoutes() {
         return () -> {
-//            get("/", urlController::getAll, Role.USER);
-//            get("/{url}", urlController::get, Role.USER);
-//            post("/", urlController::create, Role.USER);
-//            delete("/{url}", urlController::delete, Role.USER);
-//            put("/{url}", urlController::update, Role.USER);
-
-            get("/", urlController::getAll);
-            get("/{shortUrl}", urlController::get);
-            post("/", urlController::create);
-            delete("/{url}", urlController::delete);
-            put("/{url}", urlController::update);
-
+            get("/", urlController::getAll, Role.ADMIN);
+            get("/{shortUrl}", urlController::get, Role.USER);
+            post("/", urlController::create, Role.USER);
+            delete("/{url}", urlController::delete, Role.USER);
+            put("/{url}", urlController::update, Role.USER);
         };
     }
-
 }

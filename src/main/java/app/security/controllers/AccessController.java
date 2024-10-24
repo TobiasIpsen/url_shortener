@@ -1,7 +1,7 @@
 package app.security.controllers;
 
 import app.security.enums.Role;
-import dk.bugelhartmann.UserDTO;
+import app.dtos.UserDTO;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 import io.javalin.security.RouteRole;

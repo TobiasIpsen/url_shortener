@@ -1,6 +1,6 @@
 package app.security.controllers;
 
-import dk.bugelhartmann.UserDTO;
+import app.dtos.UserDTO;
 import io.javalin.http.Handler;
 import io.javalin.security.RouteRole;
 

@@ -1,8 +1,9 @@
 package app.config;
 
-import app.entities.Ip;
 import app.entities.Url;
 import app.entities.UrlTracking;
+import app.security.entities.Role;
+import app.security.entities.User;
 import app.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,8 @@ public class HibernateConfigV2 {
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(Url.class);
         configuration.addAnnotatedClass(UrlTracking.class);
+        configuration.addAnnotatedClass(Role.class);
+        configuration.addAnnotatedClass(User.class);
     }
 
 

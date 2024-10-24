@@ -8,6 +8,7 @@ import app.service.IPAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import lombok.Synchronized;
 
 import java.util.List;
 
@@ -24,22 +25,25 @@ public class TrackingDAO {
         return instance;
     }
 
+    @Synchronized
     public void count(UrlDTO url, String clientIp) {
         IpDTO ip = IPAPI.getIP(clientIp);
 
         try (EntityManager em = emf.createEntityManager()) {
             UrlTracking urlTracking;
-//            UrlTracking found = em.find(UrlTracking.class, url.getShortUrl());
-            TypedQuery<UrlTracking> query = em.createQuery("SELECT u FROM UrlTracking u WHERE u.url = :shorturl", UrlTracking.class);
-            query.setParameter("shorturl",url.getShortUrl());
-            List<UrlTracking> found = query.getResultList();
-            if (found.isEmpty()) {
-                urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), 1);
-            } else {
-                urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), found.get(0).getCount()+1);
-            }
+            UrlTracking found = em.find(UrlTracking.class, url.getShortUrl());
+//            TypedQuery<UrlTracking> query = em.createQuery("SELECT u FROM UrlTracking u WHERE u.url = :shorturl", UrlTracking.class);
+//            query.setParameter("shorturl",url.getShortUrl());
+//            List<UrlTracking> found = query.getResultList();
+            String ab = "ab";
             em.getTransaction().begin();
-            em.persist(urlTracking);
+            if (found == null) {
+                urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), 1);
+                em.persist(urlTracking);
+            } else {
+                found.setCount(found.getCount() + 1);
+                em.merge(found);
+            }
             em.getTransaction().commit();
         }
     }

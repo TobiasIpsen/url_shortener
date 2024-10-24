@@ -5,6 +5,7 @@ import app.daos.TrackingDAO;
 import app.daos.UrlDAO;
 import app.dtos.IpDTO;
 import app.dtos.UrlDTO;
+import app.dtos.UserDTO;
 import app.entities.Url;
 import app.entities.UrlTracking;
 import app.service.IPAPI;
@@ -54,7 +55,8 @@ public class UrlController implements IController {
             ctx.json("Request is empty");
         } else {
             UrlDTO urlDTO = ctx.bodyAsClass(UrlDTO.class);
-            UrlDTO newShortUrl = urlDAO.create(urlDTO);
+            UserDTO user = ctx.attribute("user");
+            UrlDTO newShortUrl = urlDAO.create(urlDTO, user);
             ctx.status(HttpStatus.CREATED);
             ctx.json(newShortUrl);
         }

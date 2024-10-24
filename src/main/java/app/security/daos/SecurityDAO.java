@@ -5,7 +5,7 @@ import app.security.entities.Role;
 import app.security.entities.User;
 import app.security.exceptions.ApiException;
 import app.security.exceptions.ValidationException;
-import dk.bugelhartmann.UserDTO;
+import app.dtos.UserDTO;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -40,7 +40,7 @@ public class SecurityDAO implements ISecurityDAO {
             user.getRoles().size(); // force roles to be fetched from db
             if (!user.verifyPassword(password))
                 throw new ValidationException("Wrong password");
-            return new UserDTO(user.getUsername(), user.getRoles().stream().map(r -> r.getRoleName()).collect(Collectors.toSet()));
+            return new UserDTO(user.getUsername(), user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
         }
     }
 

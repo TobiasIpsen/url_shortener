@@ -1,8 +1,6 @@
 package app.dtos;
 
 import app.entities.Url;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
@@ -15,9 +13,12 @@ public class UrlDTO {
 
     String shortUrl;
 
+    UserDTO userDTO;
+
     public UrlDTO(Url url) {
         this.longUrl = url.getLongUrl();
         this.shortUrl = url.getShortUrl();
+        this.userDTO = new UserDTO(url.getUser());
     }
 
 }

@@ -29,7 +29,7 @@ public class IPAPI {
 
             if (response.statusCode() == 200) {
                 ipDTO = om.readValue(response.body(), IpDTO.class);
-                System.out.println(response.body());
+//                System.out.println(response.body());
             } else {
                 System.out.println("GET request failed. Status code: " + response.statusCode());
             }

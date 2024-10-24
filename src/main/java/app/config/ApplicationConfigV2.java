@@ -38,7 +38,7 @@ public class ApplicationConfigV2 {
     public static Javalin startServer(int port) {
         Javalin app = Javalin.create(ApplicationConfigV2::configuration);
 
-//        app.beforeMatched(accessController::accessHandler);
+        app.beforeMatched(accessController::accessHandler);
 
         app.exception(Exception.class, ApplicationConfigV2::generalExceptionHandler);
         app.exception(ApiException.class, ApplicationConfigV2::apiExceptionHandler);

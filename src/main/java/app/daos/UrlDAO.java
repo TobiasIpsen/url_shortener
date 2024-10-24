@@ -1,8 +1,10 @@
 package app.daos;
 
 import app.dtos.UrlDTO;
+import app.dtos.UserDTO;
 import app.entities.Url;
 import app.entities.UrlTracking;
+import app.security.entities.User;
 import app.utils.Conversion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -48,14 +50,20 @@ public class UrlDAO implements IDao {
     }
 
     @Override
-    public UrlDTO create(UrlDTO urlDTO) {
+    public UrlDTO create(UrlDTO urlDTO, UserDTO userDTO) {
         try (EntityManager em = emf.createEntityManager()) {
+
             Url url = new Url(urlDTO);
+            User user = new User(userDTO);
+            url.addUser(user);
+
             url.setShortUrl(Conversion.shortCode());
+
             em.getTransaction().begin();
             em.persist(url);
             em.getTransaction().commit();
             return new UrlDTO(url);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

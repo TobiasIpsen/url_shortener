@@ -11,9 +11,9 @@ import app.security.exceptions.ApiException;
 import app.security.exceptions.NotAuthorizedException;
 import app.security.exceptions.ValidationException;
 import app.utils.Utils;
-import dk.bugelhartmann.ITokenSecurity;
-import dk.bugelhartmann.TokenSecurity;
-import dk.bugelhartmann.UserDTO;
+import app.security.tokensecurity.ITokenSecurity;
+import app.security.tokensecurity.TokenSecurity;
+import app.dtos.UserDTO;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.UnauthorizedResponse;
@@ -89,6 +89,7 @@ public class SecurityController implements ISecurityController {
         };
     }
 
+    // Authentication verifies the identity of a user or service
     @Override
     public Handler authenticate() throws UnauthorizedResponse {
 
@@ -120,6 +121,7 @@ public class SecurityController implements ISecurityController {
         };
     }
 
+    // Authorization determines user access rights.
     @Override
     // Check if the user's roles contain any of the allowed roles
     public boolean authorize(UserDTO user, Set<RouteRole> allowedRoles) {
@@ -187,8 +189,6 @@ public class SecurityController implements ISecurityController {
             } catch (EntityNotFoundException e) {
                 ctx.status(404).json("{\"msg\": \"User not found\"}");
 
-
-                
             }
         };
     }

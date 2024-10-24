@@ -1,13 +1,12 @@
 package app.entities;
 
 import app.dtos.UrlDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import app.security.entities.User;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,8 +25,17 @@ public class Url {
     @Column(name = "short")
     String shortUrl;
 
+    @ManyToOne
+    User user;
+
     public Url(UrlDTO urlDTO) {
         this.longUrl = urlDTO.getLongUrl();
         this.shortUrl = urlDTO.getShortUrl();
     }
+
+    public void addUser(User user) {
+        this.user = user;
+    }
+
+
 }

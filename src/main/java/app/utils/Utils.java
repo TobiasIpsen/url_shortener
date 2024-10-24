@@ -36,13 +36,13 @@ public class Utils {
         }
     }
 
-    public ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // Ignore unknown properties in JSON
-        objectMapper.registerModule(new JavaTimeModule()); // Serialize and deserialize java.time objects
-        objectMapper.writer(new DefaultPrettyPrinter());
-        return objectMapper;
-    }
+//    public ObjectMapper getObjectMapper() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // Ignore unknown properties in JSON
+//        objectMapper.registerModule(new JavaTimeModule()); // Serialize and deserialize java.time objects
+//        objectMapper.writer(new DefaultPrettyPrinter());
+//        return objectMapper;
+//    }
 
     public static String convertToJsonMessage(Context ctx, String property, String message) {
         Map<String, String> msgMap = new HashMap<>();
