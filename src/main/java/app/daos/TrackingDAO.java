@@ -41,7 +41,7 @@ public class TrackingDAO {
                 urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), 1);
                 em.persist(urlTracking);
             } else {
-                found.setCount(found.getCount() + 1);
+                found.setClicks(found.getClicks() + 1);
                 em.merge(found);
             }
             em.getTransaction().commit();

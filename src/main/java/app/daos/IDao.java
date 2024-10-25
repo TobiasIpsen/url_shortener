@@ -12,5 +12,5 @@ public interface IDao {
     public UrlDTO getLongUrl(String shortUrl);
     public UrlDTO create(UrlDTO urlDTO, UserDTO userDTO);
     public void delete(String shorturl);
-    public UrlDTO update();
+    public UrlDTO updateLong(String shortUrl, UrlDTO urlDTO);
 }

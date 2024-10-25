@@ -5,7 +5,7 @@ import app.security.exceptions.ValidationException;
 import app.dtos.UserDTO;
 
 public interface ISecurityDAO {
-    UserDTO getVerifiedUser(String username, String password) throws ValidationException;
-    User createUser(String username, String password);
+    UserDTO getVerifiedUser(UserDTO userDTO) throws ValidationException;
+    User createUser(UserDTO userDTO);
     User addRole(UserDTO user, String newRole);
 }

@@ -3,6 +3,11 @@ GET {{url}}/url
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
+### Get single url
+GET {{url}}/url/B5xeQr
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
 ### Create Url
 POST {{url}}/url
 Accept: application/json
@@ -13,6 +18,17 @@ Authorization: Bearer {{jwt_token}}
   "longUrl": "http://youtube.com/"
 }
 
+### Delete Url
+DELETE {{url}}/url/B5xeQr
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
 
-### Get url
-GET {{url}}/url/B5xeQr
+### Update Long URL
+PUT {{url}}/url/qCK6Qy
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "longUrl": "http://dr.dk/"
+}

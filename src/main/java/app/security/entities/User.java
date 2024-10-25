@@ -30,6 +30,10 @@ public class User implements Serializable, ISecurityUser {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private int id;
+
     @Basic(optional = false)
     @Column(name = "username", length = 25)
     private String username;
@@ -45,6 +49,9 @@ public class User implements Serializable, ISecurityUser {
     @OneToMany(mappedBy = "user")
     Set<Url> urls = new HashSet<>();
 
+    public void addUrl(Url url) {
+        urls.add(url);
+    }
 
     public Set<String> getRolesAsStrings() {
         if (roles.isEmpty()) {
@@ -62,6 +69,7 @@ public class User implements Serializable, ISecurityUser {
     }
 
     public User(UserDTO userDTO) {
+        this.id = userDTO.getId();
         this.username = userDTO.getUsername();
         this.roles = userDTO.getRoles().stream()
                 .map(Role::new)

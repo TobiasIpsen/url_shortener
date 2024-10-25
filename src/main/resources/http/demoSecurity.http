@@ -9,7 +9,7 @@ POST {{url}}/auth/register/
     "password": "test123"
 }
 
-###
+### Login
 POST {{url}}/auth/login/
 
 {

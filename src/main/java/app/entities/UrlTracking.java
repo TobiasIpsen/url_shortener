@@ -18,5 +18,5 @@ public class UrlTracking {
 
     private String regionName;
 
-    private int count;
+    private int clicks;
 }

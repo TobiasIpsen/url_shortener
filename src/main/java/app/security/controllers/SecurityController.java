@@ -55,7 +55,7 @@ public class SecurityController implements ISecurityController {
             ObjectNode returnObject = objectMapper.createObjectNode(); // for sending json messages back to the client
             try {
                 UserDTO user = ctx.bodyAsClass(UserDTO.class);
-                UserDTO verifiedUser = securityDAO.getVerifiedUser(user.getUsername(), user.getPassword());
+                UserDTO verifiedUser = securityDAO.getVerifiedUser(user);
                 String token = createToken(verifiedUser);
 
                 ctx.status(200).json(returnObject
@@ -76,7 +76,7 @@ public class SecurityController implements ISecurityController {
             ObjectNode returnObject = objectMapper.createObjectNode();
             try {
                 UserDTO userInput = ctx.bodyAsClass(UserDTO.class);
-                User created = securityDAO.createUser(userInput.getUsername(), userInput.getPassword());
+                User created = securityDAO.createUser(userInput);
 
                 String token = createToken(new UserDTO(created.getUsername(), Set.of("USER")));
                 ctx.status(HttpStatus.CREATED).json(returnObject

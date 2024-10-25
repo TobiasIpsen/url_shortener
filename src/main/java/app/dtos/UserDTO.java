@@ -18,10 +18,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 public class UserDTO {
+    private int id;
     private String username;
     private String password;
-    Set<String> roles = new HashSet<>();
-    Set<UrlDTO> urlDTOS = new HashSet<>();
+    private Set<String> roles = new HashSet<>();
+    private Set<UrlDTO> urlDTOS = new HashSet<>();
 
     public UserDTO(String username, String password) {
         this.username = username;
@@ -34,6 +35,7 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.roles = user.getRolesAsStrings();
         this.urlDTOS = user.getUrls().stream()

@@ -6,10 +6,7 @@ import app.security.entities.User;
 import app.security.exceptions.ApiException;
 import app.security.exceptions.ValidationException;
 import app.dtos.UserDTO;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.*;
 
 import java.util.stream.Collectors;
 
@@ -32,25 +29,28 @@ public class SecurityDAO implements ISecurityDAO {
     }
 
     @Override
-    public UserDTO getVerifiedUser(String username, String password) throws ValidationException {
+    public UserDTO getVerifiedUser(UserDTO userDTO) throws ValidationException {
         try (EntityManager em = getEntityManager()) {
-            User user = em.find(User.class, username);
+//            User user = em.find(User.class, userDTO.getUsername());
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :name", User.class);
+            query.setParameter("name",userDTO.getUsername());
+            User user = query.getSingleResult();
             if (user == null)
-                throw new EntityNotFoundException("No user found with username: " + username); //RuntimeException
+                throw new EntityNotFoundException("No user found with username: " + userDTO.getUsername()); //RuntimeException
             user.getRoles().size(); // force roles to be fetched from db
-            if (!user.verifyPassword(password))
+            if (!user.verifyPassword(userDTO.getPassword()))
                 throw new ValidationException("Wrong password");
             return new UserDTO(user.getUsername(), user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
         }
     }
 
     @Override
-    public User createUser(String username, String password) {
+    public User createUser(UserDTO userDTO) {
         try (EntityManager em = getEntityManager()) {
-            User userEntity = em.find(User.class, username);
+            User userEntity = em.find(User.class, userDTO.getId());
             if (userEntity != null)
-                throw new EntityExistsException("User with username: " + username + " already exists");
-            userEntity = new User(username, password);
+                throw new EntityExistsException("User with username: " + userDTO.getUsername() + " already exists");
+            userEntity = new User(userDTO.getUsername(), userDTO.getPassword());
             em.getTransaction().begin();
             Role userRole = em.find(Role.class, "user");
             if (userRole == null)

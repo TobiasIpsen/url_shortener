@@ -3,15 +3,13 @@ package app.controllers;
 import app.config.HibernateConfigV2;
 import app.daos.TrackingDAO;
 import app.daos.UrlDAO;
-import app.dtos.IpDTO;
 import app.dtos.UrlDTO;
 import app.dtos.UserDTO;
-import app.entities.Url;
-import app.entities.UrlTracking;
-import app.service.IPAPI;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -19,11 +17,13 @@ public class UrlController implements IController {
 
     UrlDAO urlDAO;
     TrackingDAO trackingDAO;
+    private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
 
     public UrlController() {
         EntityManagerFactory emf = HibernateConfigV2.getEntityManagerFactoryConfig(false);
         this.urlDAO = UrlDAO.getInstance(emf);
         this.trackingDAO = TrackingDAO.getInstance(emf);
+        logger.info("UrlController initialized");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UrlController implements IController {
 
     @Override
     public void delete(Context ctx) {
-        String shortUrl = ctx.pathParam("url");
+        String shortUrl = ctx.pathParam("shortUrl");
         urlDAO.delete(shortUrl);
         ctx.status(HttpStatus.OK);
     }
@@ -72,5 +72,17 @@ public class UrlController implements IController {
     @Override
     public void update(Context ctx) {
 
+        String shortUrl = ctx.pathParam("shortUrl");
+
+//        UrlDTO urlDTO = ctx.bodyAsClass(UrlDTO.class);
+        UrlDTO urlDTO = ctx.bodyValidator(UrlDTO.class)
+                .check(u -> u.getLongUrl() != null, "Long url is empty")
+//                .check(u -> u.getShortUrl() != null,"Short url is empty")
+                .get();
+
+        UrlDTO changedURL = urlDAO.updateLong(shortUrl, urlDTO);
+
+        ctx.status(HttpStatus.OK);
+        ctx.json(changedURL);
     }
 }

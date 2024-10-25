@@ -53,7 +53,7 @@ public class HibernateConfigV2 {
             props.put("hibernate.connection.driver_class", "org.postgresql.Driver"); // driver class for postgresql
             props.put("hibernate.hbm2ddl.auto", "create-drop"); // hibernate creates tables based on entities
             props.put("hibernate.current_session_context_class", "thread"); // hibernate current session context
-            props.put("hibernate.show_sql", "true"); // show sql in console
+            props.put("hibernate.show_sql", "false"); // show sql in console
             props.put("hibernate.format_sql", "true"); // format sql in console
             props.put("hibernate.use_sql_comments", "true"); // show sql comments in console
             props.put("hibernate.archive.autodetection", "class"); // hibernate scans for annotated classes

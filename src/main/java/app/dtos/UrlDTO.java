@@ -13,12 +13,18 @@ public class UrlDTO {
 
     String shortUrl;
 
-    UserDTO userDTO;
+    int userId;
+//    UserDTO userDTO;
+
+    public UrlDTO(String longUrl) {
+        this.longUrl = longUrl;
+    }
 
     public UrlDTO(Url url) {
         this.longUrl = url.getLongUrl();
         this.shortUrl = url.getShortUrl();
-        this.userDTO = new UserDTO(url.getUser());
+        this.userId = url.getUser().getId();
+//        this.userDTO = new UserDTO(url.getUser());
     }
 
 }

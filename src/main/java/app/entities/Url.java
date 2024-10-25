@@ -19,11 +19,11 @@ import java.util.Set;
 public class Url {
 
     @Id
-    @Column(name = "long")
-    String longUrl;
-
     @Column(name = "short")
     String shortUrl;
+
+    @Column(name = "long")
+    String longUrl;
 
     @ManyToOne
     User user;
