@@ -3,7 +3,7 @@ package app.config;
 import app.entities.Url;
 import app.security.entities.Role;
 import app.security.entities.User;
-import app.utils.Conversion;
+import app.service.Conversion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 

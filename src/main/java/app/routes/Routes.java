@@ -10,7 +10,7 @@ public class Routes {
 
     public EndpointGroup getRoutes() {
         return () -> {
-            path("/url", urlRoute.getRoutes());
+            path("/urls", urlRoute.getRoutes());
         };
     }
 

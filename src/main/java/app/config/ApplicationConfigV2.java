@@ -2,12 +2,10 @@ package app.config;
 
 import app.routes.Routes;
 import app.security.controllers.AccessController;
-import app.security.controllers.SecurityController;
 import app.security.enums.Role;
 import app.security.exceptions.ApiException;
 import app.security.routes.SecurityRoutes;
 import app.utils.Utils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
@@ -40,7 +38,7 @@ public class ApplicationConfigV2 {
 
         app.beforeMatched(accessController::accessHandler);
 
-        app.exception(Exception.class, ApplicationConfigV2::generalExceptionHandler);
+//        app.exception(Exception.class, ApplicationConfigV2::generalExceptionHandler);
         app.exception(ApiException.class, ApplicationConfigV2::apiExceptionHandler);
         app.exception(EntityNotFoundException.class, ApplicationConfigV2::entityNotFound);
 
@@ -54,10 +52,10 @@ public class ApplicationConfigV2 {
 
     //--------------Exceptions--------------//
 
-    private static void generalExceptionHandler(Exception e, Context ctx) {
-        logger.error("An unhandled exception occurred", e.getMessage());
-        ctx.json(Utils.convertToJsonMessage(ctx, "error", e.getMessage()));
-    }
+//    private static void generalExceptionHandler(Exception e, Context ctx) {
+//        logger.error("An unhandled exception occurred", e.getMessage());
+//        ctx.json(Utils.convertToJsonMessage(ctx, "error", e.getMessage()));
+//    }
 
     public static void apiExceptionHandler(ApiException e, Context ctx) {
         ctx.status(e.getCode());

@@ -17,6 +17,7 @@ public class TrackingDAO {
     private static TrackingDAO instance;
     private static EntityManagerFactory emf;
 
+    @Synchronized
     public static TrackingDAO getInstance(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -35,7 +36,6 @@ public class TrackingDAO {
 //            TypedQuery<UrlTracking> query = em.createQuery("SELECT u FROM UrlTracking u WHERE u.url = :shorturl", UrlTracking.class);
 //            query.setParameter("shorturl",url.getShortUrl());
 //            List<UrlTracking> found = query.getResultList();
-            String ab = "ab";
             em.getTransaction().begin();
             if (found == null) {
                 urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), 1);

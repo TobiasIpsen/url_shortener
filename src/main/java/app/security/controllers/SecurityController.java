@@ -14,6 +14,7 @@ import app.utils.Utils;
 import app.security.tokensecurity.ITokenSecurity;
 import app.security.tokensecurity.TokenSecurity;
 import app.dtos.UserDTO;
+import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.UnauthorizedResponse;
@@ -191,6 +192,11 @@ public class SecurityController implements ISecurityController {
 
             }
         };
+    }
+
+    // Health check for the API. Used in deployment
+    public void healthCheck(@NotNull Context ctx) {
+        ctx.status(200).json("{\"msg\": \"API is up and running\"}");
     }
 
 }

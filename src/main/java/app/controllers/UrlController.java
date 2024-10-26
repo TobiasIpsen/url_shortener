@@ -66,7 +66,7 @@ public class UrlController implements IController {
     public void delete(Context ctx) {
         String shortUrl = ctx.pathParam("shortUrl");
         urlDAO.delete(shortUrl);
-        ctx.status(HttpStatus.OK);
+        ctx.status(HttpStatus.NO_CONTENT);
     }
 
     @Override
