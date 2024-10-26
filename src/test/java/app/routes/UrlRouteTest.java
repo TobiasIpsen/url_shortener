@@ -81,7 +81,7 @@ class UrlRouteTest {
     void getAllUrls() {
         given()
                 .when()
-                .header("Authorization", userToken)
+                .header("Authorization", adminToken)
                 .get("/urls")
                 .then()
                 .log().all()
