@@ -1,7 +1,7 @@
 package app.routes;
 
-import app.config.ApplicationConfigV2;
-import app.config.HibernateConfigV2;
+import app.config.ApplicationConfig;
+import app.config.HibernateConfig;
 import app.dtos.UserDTO;
 import app.entities.Url;
 import app.security.controllers.SecurityController;
@@ -14,7 +14,6 @@ import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ import static org.hamcrest.Matchers.is;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UrlRouteTest {
 
-    private static final EntityManagerFactory emf = HibernateConfigV2.getEntityManagerFactoryConfig(true);
+    private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(true);
     private static final SecurityController securityController = SecurityController.getInstance();
     private static final SecurityDAO securityDAO = new SecurityDAO(emf);
     private static Javalin app;
@@ -36,7 +35,7 @@ class UrlRouteTest {
     @BeforeAll
     static void beforeAll() {
         RestAssured.baseURI = "http://localhost:7070/api/v1";
-        app = ApplicationConfigV2.startServer(7070);
+        app = ApplicationConfig.startServer(7070);
     }
 
     @BeforeEach
@@ -73,7 +72,7 @@ class UrlRouteTest {
 
     @AfterAll
     void afterAll() {
-        ApplicationConfigV2.stopServer(app);
+        ApplicationConfig.stopServer(app);
     }
 
     @Test
@@ -113,10 +112,38 @@ class UrlRouteTest {
                 .when()
                 .post("/urls")
                 .then()
-                .statusCode(201)
+                .statusCode(400)
                 .body("longUrl", is("https://www.reddit.com/"))
                 .assertThat()
                 .body("shortUrl.length()", equalTo(6));
+    }
+
+    @Test
+    @DisplayName("Create URL with Empty body")
+    void creatUrlEmptyBody() {
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", userToken)
+                .accept("application/json")
+                .body("{}")
+                .when()
+                .post("/urls")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    @DisplayName("Create URL with Empty longUrl")
+    void creatUrlEmptyLongUrl() {
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", userToken)
+                .accept("application/json")
+                .body(Map.of("longUrl", ""))
+                .when()
+                .post("/urls")
+                .then()
+                .statusCode(400);
     }
 
     @Test

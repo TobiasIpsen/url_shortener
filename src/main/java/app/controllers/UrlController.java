@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.config.HibernateConfigV2;
+import app.config.HibernateConfig;
 import app.daos.TrackingDAO;
 import app.daos.UrlDAO;
 import app.dtos.UrlDTO;
@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 public class UrlController implements IController {
 
@@ -20,7 +21,7 @@ public class UrlController implements IController {
     private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
 
     public UrlController() {
-        EntityManagerFactory emf = HibernateConfigV2.getEntityManagerFactoryConfig(false);
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
         this.urlDAO = UrlDAO.getInstance(emf);
         this.trackingDAO = TrackingDAO.getInstance(emf);
         logger.info("UrlController initialized");
@@ -39,34 +40,33 @@ public class UrlController implements IController {
     public void get(Context ctx) {
         String shortUrl = ctx.pathParam("shortUrl");
         String clientIp = ctx.header("X-Forwarded-For");
-        if (clientIp == null) {
+        if (clientIp == null || clientIp.isEmpty()) {
             clientIp = ctx.ip();
         }
         // DTO
         UrlDTO urlDTO = urlDAO.getLongUrl(shortUrl);
-        trackingDAO.count(urlDTO, "185.107.176.36");
-        // Respoonse/Redirect
+        trackingDAO.count(urlDTO, clientIp);
+        // Response/Redirect
         ctx.redirect(urlDTO.getLongUrl());
     }
 
     @Override
     public void create(Context ctx) {
-        if (ctx.body().isEmpty()) {
-            ctx.json("Request is empty");
-        } else {
-            UrlDTO urlDTO = ctx.bodyAsClass(UrlDTO.class);
-            UserDTO user = ctx.attribute("user");
-            UrlDTO newShortUrl = urlDAO.create(urlDTO, user);
-            ctx.status(HttpStatus.CREATED);
-            ctx.json(newShortUrl);
-        }
-    }
+        UserDTO user = ctx.attribute("user");
 
-    @Override
-    public void delete(Context ctx) {
-        String shortUrl = ctx.pathParam("shortUrl");
-        urlDAO.delete(shortUrl);
-        ctx.status(HttpStatus.NO_CONTENT);
+        UrlDTO urlDTO = ctx.bodyValidator(UrlDTO.class)
+                .check(u -> u.getLongUrl() != null, "Long url is empty")
+                .get();
+
+        if (urlDTO.getLongUrl() == null || urlDTO.getLongUrl().trim().isEmpty()) {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.json(Map.of("Error", "longUrl cannot be empty"));
+            return;
+        }
+
+        UrlDTO newShortUrl = urlDAO.create(urlDTO, user);
+        ctx.status(HttpStatus.CREATED);
+        ctx.json(newShortUrl);
     }
 
     @Override
@@ -74,15 +74,26 @@ public class UrlController implements IController {
 
         String shortUrl = ctx.pathParam("shortUrl");
 
-//        UrlDTO urlDTO = ctx.bodyAsClass(UrlDTO.class);
         UrlDTO urlDTO = ctx.bodyValidator(UrlDTO.class)
                 .check(u -> u.getLongUrl() != null, "Long url is empty")
-//                .check(u -> u.getShortUrl() != null,"Short url is empty")
                 .get();
+
+        if (urlDTO.getLongUrl() == null || urlDTO.getLongUrl().trim().isEmpty()) {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.json(Map.of("Error", "longUrl cannot be empty"));
+            return;
+        }
 
         UrlDTO changedURL = urlDAO.updateLong(shortUrl, urlDTO);
 
         ctx.status(HttpStatus.OK);
         ctx.json(changedURL);
+    }
+
+    @Override
+    public void delete(Context ctx) {
+        String shortUrl = ctx.pathParam("shortUrl");
+        urlDAO.delete(shortUrl);
+        ctx.status(HttpStatus.NO_CONTENT);
     }
 }

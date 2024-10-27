@@ -1,6 +1,5 @@
 package app.controllers;
 
-import app.dtos.UrlDTO;
 import io.javalin.http.Context;
 
 public interface IController {

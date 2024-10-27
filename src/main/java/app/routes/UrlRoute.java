@@ -15,8 +15,8 @@ public class UrlRoute {
             get("/", urlController::getAll, Role.ADMIN);
             get("/{shortUrl}", urlController::get, Role.ANYONE);
             post("/", urlController::create, Role.USER);
-            delete("/{shortUrl}", urlController::delete, Role.USER);
             put("/{shortUrl}", urlController::update, Role.USER);
+            delete("/{shortUrl}", urlController::delete, Role.USER);
         };
     }
 }

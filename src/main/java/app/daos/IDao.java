@@ -2,7 +2,6 @@ package app.daos;
 
 import app.dtos.UrlDTO;
 import app.dtos.UserDTO;
-import app.entities.Url;
 
 import java.util.List;
 

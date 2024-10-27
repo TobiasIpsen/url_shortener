@@ -2,15 +2,11 @@ package app.daos;
 
 import app.dtos.IpDTO;
 import app.dtos.UrlDTO;
-import app.entities.Url;
 import app.entities.UrlTracking;
 import app.service.IPAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.TypedQuery;
 import lombok.Synchronized;
-
-import java.util.List;
 
 public class TrackingDAO {
 
@@ -33,9 +29,6 @@ public class TrackingDAO {
         try (EntityManager em = emf.createEntityManager()) {
             UrlTracking urlTracking;
             UrlTracking found = em.find(UrlTracking.class, url.getShortUrl());
-//            TypedQuery<UrlTracking> query = em.createQuery("SELECT u FROM UrlTracking u WHERE u.url = :shorturl", UrlTracking.class);
-//            query.setParameter("shorturl",url.getShortUrl());
-//            List<UrlTracking> found = query.getResultList();
             em.getTransaction().begin();
             if (found == null) {
                 urlTracking = new UrlTracking(url.getShortUrl(), ip.getRegionName(), 1);

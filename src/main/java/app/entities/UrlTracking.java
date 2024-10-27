@@ -14,8 +14,6 @@ public class UrlTracking {
     @Id
     private String url;
 
-//    private String country;
-
     private String regionName;
 
     private int clicks;

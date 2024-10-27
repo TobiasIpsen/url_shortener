@@ -31,7 +31,6 @@ public class SecurityDAO implements ISecurityDAO {
     @Override
     public UserDTO getVerifiedUser(UserDTO userDTO) throws ValidationException {
         try (EntityManager em = getEntityManager()) {
-//            User user = em.find(User.class, userDTO.getUsername());
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :name", User.class);
             query.setParameter("name",userDTO.getUsername());
             User user = query.getSingleResult();
@@ -69,7 +68,9 @@ public class SecurityDAO implements ISecurityDAO {
     @Override
     public User addRole(UserDTO userDTO, String newRole) {
         try (EntityManager em = getEntityManager()) {
-            User user = em.find(User.class, userDTO.getUsername());
+            User user = em.createQuery("SELECT u FROM User u WHERE u.username = :name", User.class)
+                    .setParameter("name", userDTO.getUsername())
+                    .getSingleResult();
             if (user == null)
                 throw new EntityNotFoundException("No user found with username: " + userDTO.getUsername());
             em.getTransaction().begin();

@@ -1,11 +1,10 @@
 package app.daos;
 
-import app.config.HibernateConfigV2;
+import app.config.HibernateConfig;
 import app.config.Populate;
 import app.dtos.UrlDTO;
 import app.dtos.UserDTO;
 import app.entities.Url;
-import app.security.entities.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -27,7 +26,7 @@ class UrlDAOTest {
 
     @BeforeAll
     static void beforeAll() {
-        emf = HibernateConfigV2.getEntityManagerFactoryConfig(true);
+        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
         dao = UrlDAO.getInstance(emf);
     }
 

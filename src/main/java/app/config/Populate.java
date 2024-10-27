@@ -13,7 +13,7 @@ import java.util.List;
 public class Populate {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = HibernateConfigV2.getEntityManagerFactoryConfig(false);
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
         populate(emf);
     }
 

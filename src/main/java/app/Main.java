@@ -1,9 +1,9 @@
 package app;
 
-import app.config.ApplicationConfigV2;
+import app.config.ApplicationConfig;
 
 public class Main {
     public static void main(String[] args) {
-        ApplicationConfigV2.startServer(7070);
+        ApplicationConfig.startServer(7070);
     }
 }

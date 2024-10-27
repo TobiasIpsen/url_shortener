@@ -14,7 +14,6 @@ public class UrlDTO {
     String shortUrl;
 
     int userId;
-//    UserDTO userDTO;
 
     public UrlDTO(String longUrl) {
         this.longUrl = longUrl;
@@ -24,7 +23,6 @@ public class UrlDTO {
         this.longUrl = url.getLongUrl();
         this.shortUrl = url.getShortUrl();
         this.userId = url.getUser().getId();
-//        this.userDTO = new UserDTO(url.getUser());
     }
 
 }

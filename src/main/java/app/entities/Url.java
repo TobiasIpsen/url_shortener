@@ -5,11 +5,6 @@ import app.security.entities.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter

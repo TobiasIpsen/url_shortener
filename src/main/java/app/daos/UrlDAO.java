@@ -141,5 +141,4 @@ public class UrlDAO implements IDao {
             throw new RuntimeException("Unexpected error occurred in updateLong method", e);
         }
     }
-
 }

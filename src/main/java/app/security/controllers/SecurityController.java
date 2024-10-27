@@ -3,7 +3,7 @@ package app.security.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nimbusds.jose.JOSEException;
-import app.config.HibernateConfigV2;
+import app.config.HibernateConfig;
 import app.security.daos.ISecurityDAO;
 import app.security.daos.SecurityDAO;
 import app.security.entities.User;
@@ -46,7 +46,7 @@ public class SecurityController implements ISecurityController {
         if (instance == null) {
             instance = new SecurityController();
         }
-        securityDAO = new SecurityDAO(HibernateConfigV2.getEntityManagerFactoryConfig(false));
+        securityDAO = new SecurityDAO(HibernateConfig.getEntityManagerFactoryConfig(false));
         return instance;
     }
 
