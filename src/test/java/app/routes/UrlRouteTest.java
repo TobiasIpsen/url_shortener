@@ -112,7 +112,7 @@ class UrlRouteTest {
                 .when()
                 .post("/urls")
                 .then()
-                .statusCode(400)
+                .statusCode(201)
                 .body("longUrl", is("https://www.reddit.com/"))
                 .assertThat()
                 .body("shortUrl.length()", equalTo(6));
