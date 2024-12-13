@@ -13,8 +13,8 @@ import java.util.List;
 public class Populate {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
-        populate(emf);
+//        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
+//        populate(emf);
     }
 
     public static List<Url> populate(EntityManagerFactory emf) {

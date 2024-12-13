@@ -15,7 +15,7 @@ Content-Type:application/json
 Authorization: Bearer {{jwt_token}}
 
 {
-  "longUrl": "http://youtube.com/"
+  "longUrl": "http://dr.dk/"
 }
 
 ### Update Long URL
