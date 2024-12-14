@@ -8,6 +8,7 @@ import app.security.exceptions.ValidationException;
 import app.dtos.UserDTO;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -33,13 +34,13 @@ public class SecurityDAO implements ISecurityDAO {
         try (EntityManager em = getEntityManager()) {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :name", User.class);
             query.setParameter("name",userDTO.getUsername());
-            User user = query.getSingleResult();
-            if (user == null)
+            List<User> users = query.getResultList();
+            if (users.isEmpty())
                 throw new EntityNotFoundException("No user found with username: " + userDTO.getUsername()); //RuntimeException
-            user.getRoles().size(); // force roles to be fetched from db
-            if (!user.verifyPassword(userDTO.getPassword()))
+            users.get(0).getRoles().size(); // force roles to be fetched from db
+            if (!users.get(0).verifyPassword(userDTO.getPassword()))
                 throw new ValidationException("Wrong password");
-            return new UserDTO(user.getUsername(), user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
+            return new UserDTO(users.get(0).getUsername(), users.get(0).getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
         }
     }
 
