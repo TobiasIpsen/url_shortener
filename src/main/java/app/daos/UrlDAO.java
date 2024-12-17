@@ -30,10 +30,17 @@ public class UrlDAO implements IDao {
     }
 
     @Override
-    public List<UrlDTO> getAll() {
+    public List<UrlDTO> getAll(UserDTO userDTO) {
         try (EntityManager em = emf.createEntityManager()) {
+
             logger.info("Fetching all URLs.");
-            TypedQuery<Url> query = em.createQuery("SELECT c FROM Url c", Url.class);
+            User user = em.find(User.class,userDTO.getId());
+            if (user == null) {
+                throw new EntityNotFoundException("User not found " + userDTO.getUsername());
+            }
+
+            TypedQuery<Url> query = em.createQuery("SELECT c FROM Url c WHERE user = :user", Url.class);
+            query.setParameter("user", user);
             List<Url> urls = query.getResultList();
             return urls.stream()
                     .map(UrlDTO::new)

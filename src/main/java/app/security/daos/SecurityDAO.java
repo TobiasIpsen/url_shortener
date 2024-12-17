@@ -40,7 +40,7 @@ public class SecurityDAO implements ISecurityDAO {
             users.get(0).getRoles().size(); // force roles to be fetched from db
             if (!users.get(0).verifyPassword(userDTO.getPassword()))
                 throw new ValidationException("Wrong password");
-            return new UserDTO(users.get(0).getUsername(), users.get(0).getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
+            return new UserDTO(users.get(0).getId(), users.get(0).getUsername(), users.get(0).getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet()));
         }
     }
 

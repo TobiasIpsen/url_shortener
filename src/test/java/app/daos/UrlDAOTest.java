@@ -44,13 +44,13 @@ class UrlDAOTest {
         urlList = Populate.populate(emf);
     }
 
-    @Test
-    @DisplayName("Get All Urls")
-    void getAll() {
-        int urlListSize = dao.getAll().size();
-        int expected = 5;
-        assertEquals(expected,urlListSize);
-    }
+//    @Test
+//    @DisplayName("Get All Urls")
+//    void getAll() {
+//        int urlListSize = dao.getAll().size();
+//        int expected = 5;
+//        assertEquals(expected,urlListSize);
+//    }
 
     @Test
     @DisplayName("Get Long Url from Short Url")

@@ -23,13 +23,14 @@ public class TokenSecurity implements ITokenSecurity {
     public UserDTO getUserWithRolesFromToken(String token) throws ParseException {
         // Return a user with Set of roles as strings
         SignedJWT jwt = SignedJWT.parse(token);
+        int id = Integer.parseInt(jwt.getJWTClaimsSet().getClaim("id").toString());
         String roles = jwt.getJWTClaimsSet().getClaim("roles").toString();
         String username = jwt.getJWTClaimsSet().getClaim("username").toString();
 
         Set<String> rolesSet = Arrays
                 .stream(roles.split(","))
                 .collect(Collectors.toSet());
-        return new UserDTO(username, rolesSet);
+        return new UserDTO(id, username, rolesSet);
     }
     @Override
     public boolean tokenIsValid(String token, String secret) throws ParseException, JOSEException{
@@ -60,6 +61,7 @@ public class TokenSecurity implements ITokenSecurity {
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                     .subject(user.getUsername())
                     .issuer(ISSUER)
+                    .claim("id", user.getId())
                     .claim("username", user.getUsername())
                     .claim("roles", user.getRoles().stream().reduce((s1, s2) -> s1 + "," + s2).get())
                     .expirationTime(new Date(new Date().getTime() + Integer.parseInt(TOKEN_EXPIRE_TIME)))

@@ -29,7 +29,13 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO(String username, Set<String> roles) {
+    public UserDTO( String username, Set<String> roles) {
+        this.username = username;
+        this.roles = roles;
+    }
+
+    public UserDTO(int id, String username, Set<String> roles) {
+        this.id = id;
         this.username = username;
         this.roles = roles;
     }

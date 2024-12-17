@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IDao {
 
-    public List<UrlDTO> getAll();
+    public List<UrlDTO> getAll(UserDTO userDTO);
     public UrlDTO getLongUrl(String shortUrl);
     public UrlDTO create(UrlDTO urlDTO, UserDTO userDTO);
     public void delete(String shorturl);

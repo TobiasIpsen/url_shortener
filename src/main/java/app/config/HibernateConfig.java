@@ -86,7 +86,7 @@ public class HibernateConfig {
         props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/" + DBName);
         props.put("hibernate.connection.username", "postgres");
         props.put("hibernate.connection.password", "postgres");
-        props.put("hibernate.hbm2ddl.auto", "create-drop"); // hibernate creates tables based on entities
+        props.put("hibernate.hbm2ddl.auto", "update"); // hibernate creates tables based on entities
         return props;
     }
 

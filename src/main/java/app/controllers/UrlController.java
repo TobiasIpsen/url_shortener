@@ -29,8 +29,9 @@ public class UrlController implements IController {
 
     @Override
     public void getAll(Context ctx) {
+        UserDTO user = ctx.attribute("user");
         // DTO
-        List<UrlDTO> urlDTO = urlDAO.getAll();
+        List<UrlDTO> urlDTO = urlDAO.getAll(user);
         // response
         ctx.res().setStatus(200);
         ctx.json(urlDTO, UrlDTO.class);
@@ -53,7 +54,6 @@ public class UrlController implements IController {
     @Override
     public void create(Context ctx) {
         UserDTO user = ctx.attribute("user");
-
         UrlDTO urlDTO = ctx.bodyValidator(UrlDTO.class)
                 .check(u -> u.getLongUrl() != null, "Long url is empty")
                 .get();
