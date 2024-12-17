@@ -12,7 +12,7 @@ public class UrlRoute {
 
     public EndpointGroup getRoutes() {
         return () -> {
-            get("/", urlController::getAll, Role.ADMIN);
+            get("/", urlController::getAll, Role.ANYONE);
             get("/{shortUrl}", urlController::get, Role.ANYONE);
             post("/", urlController::create, Role.USER);
             put("/{shortUrl}", urlController::update, Role.USER);
