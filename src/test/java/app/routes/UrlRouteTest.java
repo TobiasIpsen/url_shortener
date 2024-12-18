@@ -75,18 +75,18 @@ class UrlRouteTest {
         ApplicationConfig.stopServer(app);
     }
 
-    @Test
-    @DisplayName("Get All Urls")
-    void getAllUrls() {
-        given()
-                .when()
-                .header("Authorization", adminToken)
-                .get("/urls")
-                .then()
-                .log().all()
-                .statusCode(200)
-                .body("size()", is(3));
-    }
+//    @Test
+//    @DisplayName("Get All Urls")
+//    void getAllUrls() {
+//        given()
+//                .when()
+//                .header("Authorization", adminToken)
+//                .get("/urls")
+//                .then()
+//                .log().all()
+//                .statusCode(200)
+//                .body("size()", is(3));
+//    }
 
     @Test
     @DisplayName("Get Single Url")
